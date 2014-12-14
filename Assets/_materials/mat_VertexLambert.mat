@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: mat_Lambert
+  m_Name: mat_VertexLambert
   m_Shader: {fileID: 4800000, guid: 18856abbd5138c9408c1eab4efb8ce4d, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1

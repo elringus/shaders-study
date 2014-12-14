@@ -1,4 +1,4 @@
-﻿Shader "Custom/Lambert" 
+﻿Shader "Custom/VertexLambert" 
 {
 	Properties 
 	{
@@ -17,6 +17,7 @@
 			#pragma fragment frag
 			
 			uniform float4 _Color;
+			
 			uniform float4 _LightColor0;
 			
 			struct vertexInput
