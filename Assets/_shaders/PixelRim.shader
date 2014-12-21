@@ -1,10 +1,12 @@
-﻿Shader "Custom/PixelSpecular" 
+﻿Shader "Custom/PixelRim" 
 {
 	Properties 
 	{
 		_Color ("Color", Color) = (1.0, 1.0, 1.0, 1.0)
 		_SpecColor ("Specular Color", Color)  = (1.0, 1.0, 1.0, 1.0)
-		_SpecPower ("Specular Power", Float) = 10
+		_SpecPower ("Specular Power", float) = 10
+		_RimColor ("Rim Color", Color)  = (1.0, 1.0, 1.0, 1.0)
+		_RimPower ("Rim Power", float) = 5
 	}
 	
 	SubShader 
@@ -21,6 +23,8 @@
 			uniform float4 _Color;
 			uniform float4 _SpecColor;
 			uniform float _SpecPower;
+			uniform float4 _RimColor;
+			uniform float _RimPower;
 			
 			uniform float4 _LightColor0;
 			
@@ -57,7 +61,9 @@
 				float3 diffuseReflection = _LightColor0.xyz * saturate(dot(o.normalDir, lightDirection));
 				float3 specularReflection = _SpecColor * diffuseReflection * 
 					pow(saturate(dot(reflect(-lightDirection, o.normalDir), viewDirection)), _SpecPower);
-				float3 finalReflection = _Color * (diffuseReflection + specularReflection + UNITY_LIGHTMODEL_AMBIENT);
+				float3 rimReflection = _RimColor * diffuseReflection *
+					pow(1 - saturate(dot(o.normalDir, viewDirection)), _RimPower);
+				float3 finalReflection = _Color * (diffuseReflection + specularReflection + rimReflection + UNITY_LIGHTMODEL_AMBIENT);
 				
 				return float4(finalReflection, 1.0);
 			}
