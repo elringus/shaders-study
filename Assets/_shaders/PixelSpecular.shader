@@ -54,9 +54,9 @@
 				float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
 				float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - o.posWorld.xyz);
 				
-				float3 diffuseReflection = _LightColor0.xyz * max(0.0, dot(o.normalDir, lightDirection));
-				float3 specularReflection = _SpecColor.rgb * max(0.0, dot(o.normalDir, lightDirection)) * 
-					pow(max(0.0, dot(reflect(-lightDirection, o.normalDir), viewDirection)), _SpecPower);
+				float3 diffuseReflection = _LightColor0.xyz * saturate(dot(o.normalDir, lightDirection));
+				float3 specularReflection = _SpecColor.rgb * saturate(dot(o.normalDir, lightDirection)) * 
+					pow(saturate(dot(reflect(-lightDirection, o.normalDir), viewDirection)), _SpecPower);
 				float3 finalReflection = _Color.rgb * (diffuseReflection + specularReflection + UNITY_LIGHTMODEL_AMBIENT);
 				
 				return float4(finalReflection, 1.0);
