@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: mat_PixeRim
-  m_Shader: {fileID: 4800000, guid: 63f58e1598ce7ea49b9f61204b6bbf7f, type: 3}
+  m_Name: mat_MultipleLightsRim
+  m_Shader: {fileID: 4800000, guid: caa9d450ec4869c4baa9c99f868ddee3, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
