@@ -42,7 +42,7 @@
 			{
 				vertexOutput o;
 				
-				o.posWorld = mul(v.vertex, _Object2World);
+				o.posWorld = mul(_Object2World, v.vertex);
 				o.normalDir = normalize(mul(float4(v.normal, 0.0), _World2Object).xyz);
 				
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);

@@ -46,8 +46,8 @@
 			{
 				vertexOutput o;
 				
-				o.posWorld = mul(v.vertex, _Object2World);
-				o.normalDir = normalize(mul(float4(v.normal, 0.0), _World2Object).xyz);
+				o.posWorld = mul(_Object2World, v.vertex);
+				o.normalDir = normalize(mul(float4(v.normal, 0), _World2Object).xyz);
 				
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 				return o;
@@ -65,7 +65,7 @@
 					pow(1 - saturate(dot(o.normalDir, viewDirection)), _RimPower);
 				float3 finalReflection = _Color * (diffuseReflection + specularReflection + rimReflection + UNITY_LIGHTMODEL_AMBIENT);
 				
-				return float4(finalReflection, 1.0);
+				return float4(finalReflection, 1);
 			}
 			
 			ENDCG
