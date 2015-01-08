@@ -2,8 +2,8 @@
 {
 	Properties 
 	{
-		_MainTex ("Diffuse Texture", 2D) = "white" {}
-		_Color ("Color Tint", Color) = (1.0, 1.0, 1.0, 1.0)
+		_ColorTint ("Color Tint", Color) = (1.0, 1.0, 1.0, 1.0)
+		_DiffuseMap ("Diffuse Map", 2D) = "white" {}
 		_SpecColor ("Specular Color", Color)  = (1.0, 1.0, 1.0, 1.0)
 		_SpecPower ("Specular Power", float) = 10
 		_RimColor ("Rim Color", Color)  = (1.0, 1.0, 1.0, 1.0)
@@ -21,9 +21,9 @@
 			#pragma vertex vert
 			#pragma fragment frag
 			
-			uniform sampler2D _MainTex;
-			uniform float4 _MainTex_ST;
-			uniform float4 _Color;
+			uniform float4 _ColorTint;
+			uniform sampler2D _DiffuseMap;
+			uniform float4 _DiffuseMap_ST;
 			uniform float4 _SpecColor;
 			uniform float _SpecPower;
 			uniform float4 _RimColor;
@@ -41,7 +41,7 @@
 			struct vertexOutput
 			{
 				float4 pos : SV_POSITION;
-				float4 tex : TEXCOORD0;
+				float4 diffuseTex : TEXCOORD0;
 				float4 posWorld : TEXCOORD1;
 				float3 normalDir : TEXCOORD2;
 			};
@@ -53,7 +53,7 @@
 				
 				o.posWorld = mul(_Object2World, v.vertex);
 				o.normalDir = normalize(mul(float4(v.normal, 0), _World2Object).xyz);
-				o.tex = v.texcoord;
+				o.diffuseTex = v.texcoord;
 				
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 				return o;
@@ -64,6 +64,8 @@
 				float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
 				float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - o.posWorld.xyz);
 				
+				float4 diffuseColor = tex2D(_DiffuseMap, o.diffuseTex.xy * _DiffuseMap_ST.xy + _DiffuseMap_ST.zw);
+				
 				float3 diffuseReflection = _LightColor0.xyz * saturate(dot(o.normalDir, lightDirection));
 				float3 specularReflection = _SpecColor * diffuseReflection * 
 					pow(saturate(dot(reflect(-lightDirection, o.normalDir), viewDirection)), _SpecPower);
@@ -71,9 +73,7 @@
 					pow(1 - saturate(dot(o.normalDir, viewDirection)), _RimPower);
 				float3 finalReflection = diffuseReflection + specularReflection + rimReflection + UNITY_LIGHTMODEL_AMBIENT;
 				
-				float4 tex = tex2D(_MainTex, o.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-				
-				return float4(tex * finalReflection * _Color, 1);
+				return float4(diffuseColor * finalReflection * _ColorTint, 1);
 			}
 			
 			ENDCG
@@ -89,7 +89,7 @@
 			#pragma vertex vert
 			#pragma fragment frag
 			
-			uniform float4 _Color;
+			uniform float4 _ColorTint;
 			uniform float4 _SpecColor;
 			uniform float _SpecPower;
 			uniform float4 _RimColor;
@@ -149,7 +149,7 @@
 					pow(1 - saturate(dot(o.normalDir, viewDirection)), _RimPower);
 				float3 finalReflection = diffuseReflection + specularReflection + rimReflection;
 				
-				return float4(finalReflection * _Color, 1);
+				return float4(finalReflection * _ColorTint, 1);
 			}
 			
 			ENDCG
