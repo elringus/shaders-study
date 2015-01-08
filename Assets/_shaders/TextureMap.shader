@@ -5,9 +5,9 @@
 		_ColorTint ("Color Tint", Color) = (1.0, 1.0, 1.0, 1.0)
 		_DiffuseMap ("Diffuse Map", 2D) = "white" {}
 		_SpecColor ("Specular Color", Color)  = (1.0, 1.0, 1.0, 1.0)
-		_SpecPower ("Specular Power", float) = 10
+		_SpecPower ("Specular Power", float) = 10.0
 		_RimColor ("Rim Color", Color)  = (1.0, 1.0, 1.0, 1.0)
-		_RimPower ("Rim Power", float) = 5
+		_RimPower ("Rim Power", float) = 5.0
 	}
 	
 	SubShader 
@@ -52,7 +52,7 @@
 				vertexOutput o;
 				
 				o.posWorld = mul(_Object2World, v.vertex);
-				o.normalDir = normalize(mul(float4(v.normal, 0), _World2Object).xyz);
+				o.normalDir = normalize(mul(float4(v.normal, 0.0), _World2Object).xyz);
 				o.texPos = v.texcoord;
 				
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
@@ -70,10 +70,10 @@
 				float3 specularReflection = _SpecColor * diffuseReflection * 
 					pow(saturate(dot(reflect(-lightDirection, o.normalDir), viewDirection)), _SpecPower);
 				float3 rimReflection = _RimColor * diffuseReflection *
-					pow(1 - saturate(dot(o.normalDir, viewDirection)), _RimPower);
+					pow(1.0 - saturate(dot(o.normalDir, viewDirection)), _RimPower);
 				float3 finalReflection = diffuseReflection + specularReflection + rimReflection + UNITY_LIGHTMODEL_AMBIENT;
 				
-				return float4(diffuseColor * finalReflection * _ColorTint, 1);
+				return float4(diffuseColor * finalReflection * _ColorTint, 1.0);
 			}
 			
 			ENDCG
@@ -116,7 +116,7 @@
 				vertexOutput o;
 				
 				o.posWorld = mul(_Object2World, v.vertex);
-				o.normalDir = normalize(mul(float4(v.normal, 0), _World2Object).xyz);
+				o.normalDir = normalize(mul(float4(v.normal, 0.0), _World2Object).xyz);
 				
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 				return o;
@@ -130,15 +130,15 @@
 				
 				// directional light w-component will always be zero
 				// also, if-else construct is VERY heavy, so shouldn't use it (will replace with lerp() in future)
-				if (_WorldSpaceLightPos0.w == 0)
+				if (_WorldSpaceLightPos0.w == 0.0)
 				{
-					lightAttenuation = 1;
+					lightAttenuation = 1.0;
 					lightDirection = normalize(_WorldSpaceLightPos0.xyz);
 				}
 				else 
 				{
 					float3 fragToLightSource = _WorldSpaceLightPos0.xyz - o.posWorld.xyz;
-					lightAttenuation = 1 / length(fragToLightSource);
+					lightAttenuation = 1.0 / length(fragToLightSource);
 					lightDirection = normalize(fragToLightSource);
 				}
 				
@@ -146,10 +146,10 @@
 				float3 specularReflection = lightAttenuation * _SpecColor * diffuseReflection * 
 					pow(saturate(dot(reflect(-lightDirection, o.normalDir), viewDirection)), _SpecPower);
 				float3 rimReflection = lightAttenuation * _RimColor * diffuseReflection *
-					pow(1 - saturate(dot(o.normalDir, viewDirection)), _RimPower);
+					pow(1.0 - saturate(dot(o.normalDir, viewDirection)), _RimPower);
 				float3 finalReflection = diffuseReflection + specularReflection + rimReflection;
 				
-				return float4(finalReflection * _ColorTint, 1);
+				return float4(finalReflection * _ColorTint, 1.0);
 			}
 			
 			ENDCG
