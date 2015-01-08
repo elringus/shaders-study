@@ -41,7 +41,7 @@
 			struct vertexOutput
 			{
 				float4 pos : SV_POSITION;
-				float4 diffuseTex : TEXCOORD0;
+				float4 texPos : TEXCOORD0;
 				float4 posWorld : TEXCOORD1;
 				float3 normalDir : TEXCOORD2;
 			};
@@ -53,7 +53,7 @@
 				
 				o.posWorld = mul(_Object2World, v.vertex);
 				o.normalDir = normalize(mul(float4(v.normal, 0), _World2Object).xyz);
-				o.diffuseTex = v.texcoord;
+				o.texPos = v.texcoord;
 				
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 				return o;
@@ -64,7 +64,7 @@
 				float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
 				float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - o.posWorld.xyz);
 				
-				float4 diffuseColor = tex2D(_DiffuseMap, o.diffuseTex.xy * _DiffuseMap_ST.xy + _DiffuseMap_ST.zw);
+				float4 diffuseColor = tex2D(_DiffuseMap, o.texPos.xy * _DiffuseMap_ST.xy + _DiffuseMap_ST.zw);
 				
 				float3 diffuseReflection = _LightColor0.xyz * saturate(dot(o.normalDir, lightDirection));
 				float3 specularReflection = _SpecColor * diffuseReflection * 
