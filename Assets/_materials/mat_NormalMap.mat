@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: mat_TextureMap
-  m_Shader: {fileID: 4800000, guid: ded8829032a81bd429ff78ebddc613d5, type: 3}
+  m_Name: mat_NormalMap
+  m_Shader: {fileID: 4800000, guid: 9c03cf3298dce3a4e95581ada903dcab, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -27,6 +27,13 @@ Material:
           m_Texture: {fileID: 2800000, guid: 7aa9e736d6219a444aa636a650cb35b3, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _NormalMap
+        second:
+          m_Texture: {fileID: 2800000, guid: 2b0c8adbb68c58a4ba4da7b77853b786, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -36,6 +43,10 @@ Material:
         first:
           name: _RimPower
         second: 3
+      data:
+        first:
+          name: _BumpDepth
+        second: 1
     m_Colors:
       data:
         first:
